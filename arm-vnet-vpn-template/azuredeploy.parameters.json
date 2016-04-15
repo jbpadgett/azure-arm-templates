@@ -1,0 +1,120 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "West US"
+    },
+    "virtualNetworkName": {
+      "value": "MY-VNET"
+    },
+    "vnetAddressPrefix": {
+      "value": "10.10.0.0/18"
+    },
+    "subnet1Name": {
+      "value": "DevSubnet1"
+    },
+    "subnet1Prefix": {
+      "value": "10.10.0.0/22"
+    },
+    "subnet2Name": {
+      "value": "DevSubnet2"
+    },
+    "subnet2Prefix": {
+      "value": "10.10.4.0/22"
+    },
+    "subnet3Name": {
+      "value": "ProdSubnet1"
+    },
+    "subnet3Prefix": {
+      "value": "10.10.12.0/22"
+    },
+    "subnet4Name": {
+      "value": "ProdSubnet2"
+    },
+    "subnet4Prefix": {
+      "value": "10.10.16.0/22"
+    },
+    "subnet5Name": {
+      "value": "PCISubnet1"
+    },
+    "subnet5Prefix": {
+      "value": "10.10.24.0/22"
+    },
+    "subnet6Name": {
+      "value": "PCISubnet2"
+    },
+    "subnet6Prefix": {
+      "value": "10.10.28.0/22"
+    },
+    "GatewaySubnet": {
+      "value": "GatewaySubnet"
+    },
+    "GatewaySubnetPrefix": {
+      "value": "10.10.63.0/25"
+    },
+
+    "vpnType": {
+        "value": "RouteBased"
+    },
+    "gatewayName": {
+        "value": "AZURE-VPN-GATEWAY"
+    },
+    "gatewaySku":{  
+        "value": "Standard"
+    },
+    "gatewayPublicIPName": {
+        "value": "AZURE-VPN-GATEWAY-IP"
+    },
+    "connectionName": {
+        "value": "AZURE-VPN2MYSITE-PHX"
+    },
+    "sharedKey": {
+        "value": "INSERT-YOUR-PSK-HERE"
+    },
+    "localGatewayName": {
+        "value": "MY-LOCAL-GATEWAY1"
+    },
+    "localGatewayIpAddress": {
+        "value": "1.2.3.4"
+    },
+    "localAddressPrefix1": {
+        "value": "192.168.1.0/16"
+    },
+    "localAddressPrefix2": {
+        "value": "192.168.2.0/16"
+    },
+    "localAddressPrefix3": {
+        "value": "192.168.3.0/16"
+    },
+    "localAddressPrefix4": {
+        "value": "192.168.4.0/16"
+    },
+    "localAddressPrefix5": {
+        "value": "192.168.5.0/16"
+    },
+    "localAddressPrefix6": {
+        "value": "10.100.0.0/16"
+    },
+    "localAddressPrefix7": {
+        "value": "10.100.1.0/16"
+    },
+    "localAddressPrefix8": {
+        "value": "10.100.2.0/16"
+    },
+    "localAddressPrefix9": {
+        "value": "10.100.3.0/16"
+    },
+    "localAddressPrefix10": {
+        "value": "10.100.4.0/16"
+    },
+
+    "DNSserverPrimary": {
+        "value": "10.100.100.100"
+    },
+    "DNSserverSecondary": {
+        "value": "192.168.100.100"
+    }
+
+  }
+}
