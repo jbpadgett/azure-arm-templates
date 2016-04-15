@@ -18,10 +18,11 @@ Steps
 
 Local current dir for template & params file:
 -----------------------------------------------
-```azure group deployment create -g MY-VNET-RG1 -n MY-VNET-DEPLOYMENT -vv -f \
+```
+azure group deployment create -g MY-VNET-RG1 -n MY-VNET-DEPLOYMENT -vv -f \
 azuredeploy.json -e \
-azuredeploy.parameters.json```  
-
+azuredeploy.parameters.json
+```  
 
 
 
