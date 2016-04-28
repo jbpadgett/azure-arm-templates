@@ -10,14 +10,12 @@ This effectively can be an "Azure private VPC data center in a box" automation. 
 
 
 
-Steps
-####
+**Steps**
 1. ```azure config mode arm```
 2. ```azure group create -n "MY-VNET-RG1" -l "West US"```
 3. Select your deployment approach for template and parameter files:
 
-Local current dir for template & params file:
------------------------------------------------
+**Local current dir for template & params file:**
 ```
 azure group deployment create -g MY-VNET-RG1 -n MY-VNET-DEPLOYMENT -vv -f \
 azuredeploy.json -e \
