@@ -55,18 +55,4 @@ azure group deployment show --resource-group MY-VNET-RG1 --name MY-VNET-DEPLOYME
 
 
 
-One click Deploy to Azure:  
-----------------------------
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/http%3A%2F%2github.com%2Fraw%2Fjbpadgett%2FFmaster%2Fazure-arm-templates%2Farm-vnet-vpn-template%2Fazuredeploy.json" target="_blank">
-    <img src="http://azuredeploy.net/deploybutton.png"/>
-</a>  
-
-One Click View of template objects:  
-<a href="http://armviz.io/#/?load=http%3A%2F%2github.com%2Fraw%2Fjbpadgett%2FFmaster%2Fazure-arm-templates%2Farm-vnet-vpn-template%2Fazuredeploy.json" target="_blank">
-    <img src="http://armviz.io/visualizebutton.png"/>
-</a>
-
-
-
-
 
