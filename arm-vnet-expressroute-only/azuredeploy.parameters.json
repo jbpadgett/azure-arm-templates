@@ -54,27 +54,51 @@
       "value": "10.10.63.0/25"
     },
 
-    "vpnType": {
-        "value": "RouteBased"
+
+    "gateway1Name": {
+        "value": "MY-EXPRESSROUTE-GATEWAY"
     },
-    "gatewayName": {
-        "value": "AZURE-VPN-GATEWAY"
+
+    "gateway1Type": {
+        "value": "ExpressRoute"
     },
-    "gatewaySku":{  
-        "value": "Standard"
+
+    "connection1Name": {
+        "value": "MY-EXPRESSROUTE-CONN"
     },
-    "gatewayPublicIPName": {
-        "value": "AZURE-VPN-GATEWAY-IP"
+
+    "connection1Type": {
+        "value": "ExpressRoute"
     },
-    "connectionName": {
-        "value": "AZURE-VPN2MYSITE-PHX"
+
+
+    "gateway1PublicIPName": {
+        "value": "MY-EXPRESSROUTE-GATEWAY-IP"
     },
-    "sharedKey": {
-        "value": "INSERT-YOUR-PSK-HERE"
+
+    "circuitName": {
+        "value": "MY-EXPRESSROUTE-CIRCUIT"
     },
+    "serviceProviderName": {
+        "value": "Equinix"
+    },
+    "peeringLocation": {
+        "value": "Silicon Valley"
+    },
+    "bandwidthInMbps": {
+        "value": 10000
+    },
+    "sku_tier": {
+        "value": "Premium"
+    },
+    "sku_family": {
+        "value": "UnlimitedData"
+    },
+
     "localGatewayName": {
         "value": "MY-LOCAL-GATEWAY1"
     },
+
     "localGatewayIpAddress": {
         "value": "1.2.3.4"
     },
@@ -109,12 +133,18 @@
         "value": "10.100.4.0/16"
     },
 
+    "gatewaySku":{  
+        "value": "HighPerformance"
+    },
+
     "DNSserverPrimary": {
         "value": "10.100.100.100"
     },
     "DNSserverSecondary": {
         "value": "192.168.100.100"
     }
+
+
 
   }
 }

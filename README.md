@@ -1,5 +1,16 @@
-# azure-vnet-subnets-dns-vpn-arm-template
+# Azure ARM Templates for Deploying a VNET, subnets, DNS, Expressroute, and VPN
 Azure resource manager templates for deployments to the Azure cloud.
+There are 3 templates available.
+Each Template does differnet networking models, but do the following commmon tasks:
+* Create VNET
+* Create subnets inside the VNET
+* Setup private DNS servers for the VNET subnets
+
+There are then 3 differnet networking options:
+* IPSec VPN only from VNET to your private data center/campus
+* Expressroute only from VNET to your private data center/campus
+* Expressroute + IPSec VPN from VNET to your private data center/campus
+
 
 This template allows you to create a VNET with subnets, custom DNS, and ipsec VPN to an existing Azure resource group. 
 **NOTE:** Resource group must be created first.

@@ -127,6 +127,7 @@
       }
     },
 
+
     "GatewaySubnet": {
       "type": "string",
       "defaultValue": "GatewaySubnet",
@@ -141,52 +142,109 @@
         "description": "GatewaySubnet Prefix"
       }
     },
-	
-    "vpnType": {
+
+
+    "gateway1Type": {
         "type": "string",
-        "metadata": {
-            "description": "Route based or policy based"
-        },
-        "defaultValue": "RouteBased",
+        "defaultValue": "ExpressRoute",
         "allowedValues": [
-            "RouteBased",
-            "PolicyBased"
-        ]
-    },
-    "gatewayName": {
-        "type": "string",
-        "defaultValue": "azureGateway",
+            "ExpressRoute",
+			"Vpn",
+			"DynamicRouting"
+        ],
         "metadata": {
-            "description": "Arbitrary name for the new gateway"
+            "description": "The type of gateway to deploy. For connecting to ExpressRoute circuits, the gateway must be of type ExpressRoute. Other types are Vpn."
         }
     },
-    "gatewaySku":{  
-         "type":"string",
-        "defaultValue": "Standard",
-        "metadata":{  
-            "description":"The Sku of the Gateway. This must be one of Basic, Standard or HighPerformance."
+    "connection1Type": {
+        "type": "string",
+        "defaultValue": "ExpressRoute",
+        "allowedValues": [
+            "ExpressRoute",
+            "IPsec",
+			"Dedicated"
+        ],
+        "metadata": {
+            "description": "The type of connection. For connecting to ExpressRoute circuits, the connectionType must be of type ExpressRoute. Other types are IPsec and Vnet2Vnet."
         }
-  },
-  "gatewayPublicIPName": {
+    },
+
+
+
+    "circuitName": {
+        "type": "string",
+        "metadata": {
+            "description": "The name of the ExpressRoute circuit with which the VNet Gateway needs to connect. The Circuit must be already created successfully and must have its circuitProvisioningState property set to 'Enabled', and serviceProviderProvisioningState property set to 'Provisioned'. The Circuit must also have a BGP Peering of type AzurePrivatePeering."
+        }
+    },
+    "serviceProviderName": {
+        "type": "string",
+        "metadata": {
+            "description": "This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call."
+        }
+    },
+    "peeringLocation": {
+        "type": "string",
+        "metadata": {
+            "description": "This is the name of the peering location and not the ARM resource location. It must exactly match one of the available peering locations from List ExpressRoute Service Providers API call."
+        }
+    },
+    "bandwidthInMbps": {
+        "type": "int",
+        "metadata": {
+            "description": "This is the bandwidth in Mbps of the circuit being created. It must exactly match one of the available bandwidth offers List ExpressRoute Service Providers API call."
+        }
+    },
+    "sku_tier": {
+        "type": "string",
+        "defaultValue": "Standard",
+        "allowedValues": [
+            "Standard",
+            "Premium"
+        ],
+        "metadata": {
+            "description": "Chosen SKU Tier of ExpressRoute circuit. Choose from Premium or Standard SKU tiers."
+        }
+    },
+    "sku_family": {
+        "type": "string",
+        "defaultValue": "MeteredData",
+        "allowedValues": [
+            "MeteredData",
+            "UnlimitedData"
+        ],
+        "metadata": {
+            "description": "Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families."
+        }
+    },
+
+
+  "gateway1Name": {
+        "type": "string",
+        "defaultValue": "VirtualNetworkGateway1",
+        "metadata": {
+            "description": "Arbitrary name for the azure gateway"
+        }
+    },
+
+  "gateway1PublicIPName": {
       "type": "string",
-      "defaultValue": "azureGatewayIP",
+      "defaultValue": "azureGateway1-IP",
       "metadata": {
-          "description": "Aribtary name for public IP resource used for the new azure gateway"
+          "description": "Aribtary name for public IP resource used for an azure gateway"
       }
   },
-  "connectionName": {
+
+  "connection1Name": {
       "type": "string",
-      "defaultValue": "Azure2Other",
+      "defaultValue": "AzureConnection1",
       "metadata": {
           "description": "Arbitrary name for the new connection between Azure VNet and other network"
       }
   },
-  "sharedKey": {
-      "type": "securestring",
-      "metadata": {
-          "description": "Shared key (PSK) for IPSec tunnel"
-      }
-  },
+
+
+
   "localGatewayName": {
       "type": "string",
       "defaultValue": "localGateway",
@@ -201,7 +259,6 @@
           "description": "Public IP of remote customer site VPN device/instance"
       }
   },
-
 
 
   "localAddressPrefix1": {
@@ -285,6 +342,16 @@
       }
   },
 
+
+  "gatewaySku":{  
+       "type":"string",
+      "defaultValue": "HighPerformance",
+      "metadata":{  
+          "description":"The Sku of the Gateway. This must be one of Basic, Standard or HighPerformance."
+      }
+},
+
+
   "DNSserverPrimary": {
       "type": "string",
       "defaultValue": 
@@ -302,18 +369,22 @@
       }
   }
 
+
+
   },
 
 "variables": {
-  "api-version": "2015-06-15",
+  "apiVersion": "2015-06-15",
   "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-  "gatewaySubnetRef": "[concat(variables('vnetID'),'/subnets/','GatewaySubnet')]"
+  "gatewaySubnetRef": "[concat(variables('vnetID'),'/subnets/','GatewaySubnet')]",
+  "routingWeight": 3
 
 },
 
+
   "resources": [
     {
-      "apiVersion": "[variables('api-version')]",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('virtualNetworkName')]",
       "location": "[parameters('location')]",
@@ -368,6 +439,31 @@
             }
           },
           {
+            "name": "[parameters('subnet7Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet7Prefix')]"
+            }
+          },
+          {
+            "name": "[parameters('subnet8Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet8Prefix')]"
+            }
+          },
+          {
+            "name": "[parameters('subnet9Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet9Prefix')]"
+            }
+          },
+          {
+            "name": "[parameters('subnet10Name')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnet10Prefix')]"
+            }
+          },
+
+          {
             "name": "[parameters('GatewaySubnet')]",
             "properties": {
               "addressPrefix": "[parameters('GatewaySubnetPrefix')]"
@@ -376,67 +472,26 @@
         ]
       }
     },
+
+
         {
-            "apiVersion": "[variables('api-version')]",
-            "type": "Microsoft.Network/localNetworkGateways",
-            "name": "[parameters('localGatewayName')]",
-            "location": "[parameters('location')]",
-            "properties": {
-                "localNetworkAddressSpace": {
-	                "addressPrefixes": [
-	                    "[parameters('localAddressPrefix1')]",
-	                    "[parameters('localAddressPrefix2')]",
-	                    "[parameters('localAddressPrefix3')]",
-	                    "[parameters('localAddressPrefix4')]",
-	                    "[parameters('localAddressPrefix5')]",
-	                    "[parameters('localAddressPrefix6')]",
-	                    "[parameters('localAddressPrefix7')]",
-	                    "[parameters('localAddressPrefix8')]",
-	                    "[parameters('localAddressPrefix9')]",
-	                    "[parameters('localAddressPrefix10')]"
-	                ]
-                },
-                "gatewayIpAddress": "[parameters('localGatewayIpAddress')]"
-            }
-        },
-        {
-            "apiVersion": "[variables('api-version')]",
-            "name": "[parameters('connectionName')]",
-            "type": "Microsoft.Network/connections",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworkGateways/', parameters('gatewayName'))]",
-                "[concat('Microsoft.Network/localNetworkGateways/', parameters('localGatewayName'))]"
-            ],
-            "properties": {
-                "virtualNetworkGateway1": {
-                    "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('gatewayName'))]"
-                },
-                "localNetworkGateway2": {
-                    "id": "[resourceId('Microsoft.Network/localNetworkGateways', parameters('localGatewayName'))]"
-                },
-                "connectionType": "IPsec",
-                "routingWeight": 10,
-                "sharedKey": "[parameters('sharedKey')]"
-            }
-        },
-				
-        {
-            "apiVersion": "[variables('api-version')]",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[parameters('gatewayPublicIPName')]",
+            "name": "[parameters('gateway1PublicIPName')]",
             "location": "[parameters('location')]",
             "properties": {
                 "publicIPAllocationMethod": "Dynamic"
             }
         },
+
+
         {
-            "apiVersion": "[variables('api-version')]",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Network/virtualNetworkGateways",
-            "name": "[parameters('gatewayName')]",
+            "name": "[parameters('gateway1Name')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', parameters('gatewayPublicIPName'))]",
+                "[concat('Microsoft.Network/publicIPAddresses/', parameters('gateway1PublicIPName'))]",
                 "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]"
             ],
             "properties": {
@@ -448,23 +503,100 @@
                                 "id": "[variables('gatewaySubnetRef')]"
                             },
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('gatewayPublicIPName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('gateway1PublicIPName'))]"
                             }
                         },
                         "name": "vnetGatewayConfig"
                     }
                 ],
-                 "sku": {
-	                "name": "[parameters('gatewaySku')]",
-	                "tier": "[parameters('gatewaySku')]"
-	            },
-                "gatewayType": "Vpn",
-                "vpnType": "[parameters('vpnType')]",
-                "enableBgp": "false"
+                "gatewayType": "[parameters('gateway1Type')]"
       }
+    },
+
+
+      {
+        "apiVersion": "2015-06-15",
+        "type": "Microsoft.Network/expressRouteCircuits",
+        "name": "[parameters('circuitName')]",
+        "location": "[resourceGroup().location]",
+        "tags": {
+          "key1": "value1",
+          "key2": "value2"
+        },
+        "sku": {
+          "name": "[concat(parameters('sku_tier'),'_', parameters('sku_family'))]",
+          "tier": "[parameters('sku_tier')]",
+          "family": "[parameters('sku_family')]"
+        },
+        "properties": {
+          "serviceProviderProperties": {
+            "serviceProviderName": "[parameters('serviceProviderName')]",
+            "peeringLocation": "[parameters('peeringLocation')]",
+            "bandwidthInMbps": "[parameters('bandwidthInMbps')]"
+          }
+        }
+      },
+
+
+    {
+        "apiVersion": "[variables('apiVersion')]",
+        "name": "[parameters('connection1Name')]",
+        "type": "Microsoft.Network/connections",
+        "location": "[parameters('location')]",
+        "dependsOn": [
+            "[concat('Microsoft.Network/virtualNetworkGateways/', parameters('gateway1Name'))]"
+        ],
+        "properties": {
+            "virtualNetworkGateway1": {
+                "id": "[resourceId('Microsoft.Network/virtualNetworkGateways', parameters('gateway1Name'))]"
+            },
+            "peer": {
+                "id": "[resourceId('Microsoft.Network/expressRouteCircuits',parameters('circuitName'))]"
+            },
+            "connectionType": "[parameters('connection1Type')]",
+            "routingWeight": "[variables('routingWeight')]"
+        }
+    },
+
+
+    {
+        "apiVersion": "[variables('apiVersion')]",
+        "type": "Microsoft.Network/localNetworkGateways",
+        "name": "[parameters('localGatewayName')]",
+        "location": "[parameters('location')]",
+	    "dependsOn": [
+	        "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+	        "[concat('Microsoft.Network/virtualNetworkGateways/', parameters('gateway1Name'))]",
+	        "[concat('Microsoft.Network/publicIPAddresses/', parameters('gateway1PublicIPName'))]",
+	        "[concat('Microsoft.Network/expressRouteCircuits/', parameters('circuitName'))]"
+	    ],
+
+        "properties": {
+            "localNetworkAddressSpace": {
+                "addressPrefixes": [
+                    "[parameters('localAddressPrefix1')]",
+                    "[parameters('localAddressPrefix2')]",
+                    "[parameters('localAddressPrefix3')]",
+                    "[parameters('localAddressPrefix4')]",
+                    "[parameters('localAddressPrefix5')]",
+                    "[parameters('localAddressPrefix6')]",
+                    "[parameters('localAddressPrefix7')]",
+                    "[parameters('localAddressPrefix8')]",
+                    "[parameters('localAddressPrefix9')]",
+                    "[parameters('localAddressPrefix10')]"
+                ]
+            },
+            "gatewayIpAddress": "[parameters('localGatewayIpAddress')]"
+        }
     }
 
+
+
+
+
+
   ],
+
 
   "outputs": {
 

@@ -1,0 +1,7 @@
+{
+  "itemDisplayName": "Create VNET with subnets, routes, and security groups",
+  "description": "Create VNET with subnets, routes, and security groups in an existing resource group",
+  "summary": "Create VNET with subnets, routes, and security groups in an existing resource group",
+  "githubUsername": "jbpadgett",
+  "dateUpdated": "2016-05-25"
+}
